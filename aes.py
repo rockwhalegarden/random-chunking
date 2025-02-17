@@ -6,6 +6,7 @@ import time
 
 def upload_file(path):
     subprocess.call(["ipfs", "add", path])
+    subprocess.run(["ipfs", "pin", "add", path])
     print("")
 
 def download_file(hash, path):

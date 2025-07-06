@@ -2,11 +2,24 @@ import mmap
 import shutil
 import time
 
+from chunk_processors.base import BaseChunkProcessor
 from chunk_processors.pixel import PixelChunkProcessor
 from ipfs import download_file
 
+import random
+
+N_SAMPLES = 100
+
+sampled_indices = random.sample(range(1, 1024), N_SAMPLES)
+
+sampled_indices.sort()
+
+sampled_indices = [1024 * 1024 * i for i in sampled_indices]
+
+sampled_indices.append(1024 * 1024 * 1024 - 1)
+
 def test_encryption():
-    encryption_chunk_processor = PixelChunkProcessor([1, 3, 7, 1024 * 1024 * 1024 - 1], True)
+    encryption_chunk_processor = PixelChunkProcessor(sampled_indices, True)
 
     with open("gigabyte.bin", "rb") as f:
         mm = mmap.mmap(f.fileno(), length=0, access=mmap.ACCESS_READ)  # Maps entire file
